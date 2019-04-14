@@ -20,7 +20,7 @@ INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ("cotton balls", "personal care", .99, 45);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
-VALUES ("cell phone case", "accesories", 15.99, 25);
+VALUES ("cell phone case", "accessories", 15.99, 25);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ("comicbooks", "magazines", 3.99, 15);
