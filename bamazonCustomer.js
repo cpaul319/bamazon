@@ -2,7 +2,7 @@ const mysql = require("mysql");
 const inquirer = require("inquirer");
 // var fs = require("fs");
 var Table = require('cli-table');
-var itemsARR = [];
+ 
 
 const connection = mysql.createConnection({
     host: "localhost",
@@ -27,7 +27,7 @@ function displayItems() {
         console.log("\n");
         console.log("            Welcome to Bamazon! Your online Bazaar of deals!");
         for (var i = 0; i < res.length; i++) {
-            itemsARR.push(res[i].item_id);
+            
             tableItems.push(
                 [res[i].item_id, res[i].product_name
                     , res[i].department_name, res[i].price, res[i].stock_quantity]
@@ -46,66 +46,53 @@ function purchase() {
             name: "itemId",
             type: "input",
             message: "Pick an item by it's ID number to buy it.",
-           
-            validate: function(input) {
-                var input = parseInt(input);
-                if (itemsARR.includes(input)=== false){
-                    console.log("\r\nI'm sorry that number is not valid.Please pick an id number from the list provided");
-                    setTimeout(function() { displayItems() }, 2000);
+            validate: function(value) {
+                if ((isNaN(value)) ) { 
+                  console.log('\nYou need to provide a number');
+                  return false;
                 }
-                
-                var done = this.async();
-                setTimeout(function() {  
-                    // console.log(isNaN(input));
-                     
-                  if ((isNaN(input))&&(itemsARR.includes(input))) { 
-                      
-                    done("Please pick an id of the item you want from the list provided.");
-                    return;
-                  }   
-                //   console.log("after validation" +input);
-                //   console.log("after validation" +itemsARR);
-                  done(null,true);
-                }, 1000);
-              }
+               return true;
+            }
         },
         
         {
             name: "quantity",
             type: "input",
             message: "How many would you like?",
-            validate: function(input) {
-                var done = this.async();
-                setTimeout(function() {
-                  if (isNaN(input)) { 
-                    done("Please provide a number");
-                    return;
-                  }    
-                  done(null,true);
-                }, 1000);
-              }
+            validate: function(value) {
+                    if ((isNaN(value)) ) { 
+                      console.log('\nYou need to provide a number');
+                      return false;
+                    }
+                   return true;
+                }
         }
         ])
         .then(function (answer) {
-            connection.query("SELECT item_id, product_name, department_name, price, stock_quantity FROM products WHERE ?",
-                { item_id: answer.itemId }, function (err, results) {
-                    if (err) throw err;
-                    if (results[0].stock_quantity < parseInt(answer.quantity)) {
+            connection.query("SELECT * FROM products WHERE item_id=?",
+                 [answer.itemId], function (err, res) {
+                    if (!res.length) {
+                        console.log("That product ID does not exist. Please pick again.");
+                        purchase();
+                    }
+                    
+                   
+                    else if (res[0].stock_quantity < parseInt(answer.quantity)) {
                         console.log("Insufficient quantity to complete your order. There are only " 
-                        + results[0].stock_quantity + " item(s) left. Please try again...");
+                        + res[0].stock_quantity + " item(s) left. Please try again...");
                         shopAgain();
                     } else {
                         console.log("You purchased " + answer.quantity + " item(s) with the ID of " 
-                        + results[0].item_id
-                            + " and product name of " + results[0].product_name + ".");
+                        + res[0].item_id
+                            + " and product name of " + res[0].product_name + ".");
 
 
                         connection.query("UPDATE products SET stock_quantity = stock_quantity - ? WHERE item_id = ?",
-                         [answer.quantity, results[0].item_id],
+                         [answer.quantity, res[0].item_id],
                             function (error) {
                                 if (error) throw err;
 
-                                var total = (results[0].price * answer.quantity).toFixed(2);
+                                var total = (res[0].price * answer.quantity).toFixed(2);
                                 console.log("Your total is: " + total);
                                 console.log("That completes your order! Thanks for shopping at Bamazon!");
                                 shopAgain();
