@@ -2,7 +2,7 @@ const mysql = require("mysql");
 const inquirer = require("inquirer");
 // var fs = require("fs");
 var Table = require('cli-table');
- 
+
 
 const connection = mysql.createConnection({
     host: "localhost",
@@ -27,14 +27,14 @@ function displayItems() {
         console.log("\n");
         console.log("            Welcome to Bamazon! Your online Bazaar of deals!");
         for (var i = 0; i < res.length; i++) {
-            
+
             tableItems.push(
                 [res[i].item_id, res[i].product_name
                     , res[i].department_name, res[i].price, res[i].stock_quantity]
             );
 
         }
-        
+
         console.log(tableItems.toString());
         purchase();
     })
@@ -46,49 +46,51 @@ function purchase() {
             name: "itemId",
             type: "input",
             message: "Pick an item by it's ID number to buy it.",
-            validate: function(value) {
-                if ((isNaN(value)) ) { 
-                  console.log('\nYou need to provide a number');
-                  return false;
+            validate: function (value) {
+                if ((isNaN(value))) {
+                    console.log('\nYou need to provide a number');
+                    return false;
                 }
-               return true;
+                return true;
             }
         },
-        
+
         {
             name: "quantity",
             type: "input",
             message: "How many would you like?",
-            validate: function(value) {
-                    if ((isNaN(value)) ) { 
-                      console.log('\nYou need to provide a number');
-                      return false;
-                    }
-                   return true;
+            validate: function (value) {
+                if ((isNaN(value))) {
+                    console.log('\nYou need to provide a number');
+                    return false;
                 }
+                return true;
+            }
         }
         ])
         .then(function (answer) {
             connection.query("SELECT * FROM products WHERE item_id=?",
-                 [answer.itemId], function (err, res) {
+                [answer.itemId], function (err, res) {
                     if (!res.length) {
+                        // console.log(!res.length);
+                        // console.log("simple res" +res.length);
                         console.log("That product ID does not exist. Please pick again.");
                         purchase();
                     }
-                    
-                   
+
+
                     else if (res[0].stock_quantity < parseInt(answer.quantity)) {
-                        console.log("Insufficient quantity to complete your order. There are only " 
-                        + res[0].stock_quantity + " item(s) left. Please try again...");
+                        console.log("Insufficient quantity to complete your order. There are only "
+                            + res[0].stock_quantity + " item(s) left. Please try again...");
                         shopAgain();
                     } else {
-                        console.log("You purchased " + answer.quantity + " item(s) with the ID of " 
-                        + res[0].item_id
+                        console.log("You purchased " + answer.quantity + " item(s) with the ID of "
+                            + res[0].item_id
                             + " and product name of " + res[0].product_name + ".");
 
 
                         connection.query("UPDATE products SET stock_quantity = stock_quantity - ? WHERE item_id = ?",
-                         [answer.quantity, res[0].item_id],
+                            [answer.quantity, res[0].item_id],
                             function (error) {
                                 if (error) throw err;
 
