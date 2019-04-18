@@ -1,6 +1,6 @@
 const mysql = require("mysql");
 const inquirer = require("inquirer");
-// var fs = require("fs");
+ 
 var Table = require('cli-table');
 
 
@@ -152,7 +152,7 @@ function addNewProduct() {
                 type: "input",
                 message: "Please input the name of the new product.",
                 validate: function (value) {
-                    if ((value)==="") {
+                    if ((value) === "") {
                         console.log(`\nOops you forgot to type a name in. Please try again.`);
                         return false;
                     }
@@ -164,7 +164,7 @@ function addNewProduct() {
                 type: "input",
                 message: "What department is this item to be put in",
                 validate: function (value) {
-                    if ((value)==="") {
+                    if ((value) === "") {
                         console.log(`\nPlease provide a department name.`);
                         return false;
                     }
@@ -201,7 +201,7 @@ function addNewProduct() {
                 menu();
             })
         })
-    }
+}
 
 
 menu();

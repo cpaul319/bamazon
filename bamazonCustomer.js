@@ -1,6 +1,6 @@
 const mysql = require("mysql");
 const inquirer = require("inquirer");
-// var fs = require("fs");
+ 
 var Table = require('cli-table');
 
 
