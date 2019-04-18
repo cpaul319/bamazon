@@ -12,7 +12,6 @@ CREATE TABLE products(
     PRIMARY KEY (item_id)
 );
 
-
 INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ("dog food", "pet care", 15.99, 15);
  
@@ -47,8 +46,8 @@ INSERT INTO products (product_name, department_name, price, stock_quantity)
 VALUES ("notepad", "miscellaneous", .99, 25);
 
 INSERT INTO products (product_name, department_name, price, stock_quantity)
-VALUES ("Dr. Who", "DVDs", 125.99, 2);
+VALUES ("Dr. Who", "DVDs", 125.99, 6);
 
-
-
+ 
+ 
 SELECT * FROM products;
