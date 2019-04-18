@@ -1,6 +1,6 @@
 # bamazon
 
-    ![bamazon table data with input](images/productList.PNG)
+    ![bamazon table data with input](images/productList.png)
 
 
 
@@ -9,24 +9,24 @@
 
 
 
-        ![bamazon pick item data with input](images/pickedProduct.PNG)
+        ![bamazon pick item data with input](images/pickedProduct.png)
 
 
 
 
 
-    ![bamazon manager data with input](images/manager.PNG)
+    ![bamazon manager data with input](images/manager.png)
 
 
 
 
 
-    ![bamazon validation data with input](images/badID.PNG)
+    ![bamazon validation data with input](images/badID.png)
 
 
 
 
 
 
-    ![bamazon data with input](images/validation.PNG)
+    ![bamazon data with input](images/validation.png)
 
